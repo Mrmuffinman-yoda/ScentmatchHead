@@ -61,6 +61,10 @@ services:
       - "8001" # Port FastAPI will run on (internal)
     ports:
       - "8001:8001" # External port to access your app via HTTP
+    volumes:
+      - ./server:/app # Mount local code for live reloading
+      - /app/venv # Prevents overwriting venv in container
+      # TODO - remove live volume in production
 
   # PostgreSQL Database
   postgres-db:
@@ -93,6 +97,15 @@ services:
       - scentmatch-network
     volumes:
       - minio-data:/data
+
+  # Redis Cache
+  redis:
+    image: redis:latest
+    container_name: redis-cache
+    networks:
+      - scentmatch-network
+    ports:
+      - "6379:6379" # Redis default port
 
 networks:
   scentmatch-network:
