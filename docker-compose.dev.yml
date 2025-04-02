@@ -17,22 +17,26 @@ services:
       - "3000:3000" # Port for Next.js development server
     networks:
       - scentmatch-network
+    depends_on:
+      - fastapi
 
   # FastAPI Development Server
   fastapi:
-    build: ./server
+    build: ./server # Path to your FastAPI app
     container_name: fastapi-server
     environment:
       - DATABASE_URL=postgres://user:password@postgres-db/scentmatch
     depends_on:
       - postgres-db
-    volumes:
-      - ./server:/app # Mount local code for live reloading
-    ports:
-      - "8001:8000"
-    command: uvicorn app.main:app --host 0.0.0.0 --reload
     networks:
       - scentmatch-network
+    expose:
+      - "8001" # Port FastAPI will run on (internal)
+    ports:
+      - "8001:8001" # External port to access your app via HTTP
+    volumes:
+      - ./server:/app # Mount local code for live reloading
+      - /app/venv # Prevents overwriting venv in container
 
   # PostgreSQL Database
   postgres-db:
