@@ -1,0 +1,75 @@
+version: "3"
+
+services:
+  # Next.js Development Server
+  nextjs:
+    build:
+      context: ./ui
+      target: dev # Use the dev stage in the Dockerfile
+    container_name: nextjs-server
+    environment:
+      - NODE_ENV=development
+      - WATCHPACK_POLLING=true # For file watching in Docker
+    volumes:
+      - ./ui:/app # Mount local code for live reloading
+      - /app/node_modules # Prevents overwriting node_modules in container
+    ports:
+      - "3000:3000" # Port for Next.js development server
+    networks:
+      - scentmatch-network
+
+  # FastAPI Development Server
+  fastapi:
+    build: ./server
+    container_name: fastapi-server
+    environment:
+      - DATABASE_URL=postgres://user:password@postgres-db/scentmatch
+    depends_on:
+      - postgres-db
+    volumes:
+      - ./server:/app # Mount local code for live reloading
+    ports:
+      - "8001:8000"
+    command: uvicorn app.main:app --host 0.0.0.0 --reload
+    networks:
+      - scentmatch-network
+
+  # PostgreSQL Database
+  postgres-db:
+    image: postgres:latest
+    container_name: postgres-db
+    environment:
+      POSTGRES_USER: scentmatch_user
+      POSTGRES_PASSWORD: scentmatch_password
+      POSTGRES_DB: scentmatch_db
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - scentmatch-network
+    ports:
+      - "5432:5432"
+
+  # MinIO Blob Storage
+  minio-blob:
+    image: minio/minio:latest
+    container_name: minio-blob
+    environment:
+      MINIO_ROOT_USER: minio
+      MINIO_ROOT_PASSWORD: minio123
+    command: server /data --console-address ":9090"
+    ports:
+      - "9000:9000"
+      - "9090:9090"
+    networks:
+      - scentmatch-network
+    volumes:
+      - minio-data:/data
+
+networks:
+  scentmatch-network:
+    driver: bridge
+
+volumes:
+  postgres-data:
+  minio-data:
