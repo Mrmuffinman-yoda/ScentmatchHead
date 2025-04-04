@@ -96,7 +96,9 @@ services:
     networks:
       - scentmatch-network
     volumes:
-      - minio-data:/data
+      - minio-data:/data # Persistent storage for MinIO
+      - ./init.sh:/docker-entrypoint-init.d/init.sh # Mount the init script
+      - ./blob_storage:/blob_storage # Mount the local blob_storage folder
 
   # Redis Cache
   redis:
