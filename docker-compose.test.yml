@@ -1,0 +1,81 @@
+version: "3"
+
+services:
+  # Next.js Development Server (Test environment)
+  nextjs:
+    build:
+      context: ./ui
+      target: dev
+    container_name: nextjs-server-test
+    environment:
+      - NODE_ENV=development
+      - WATCHPACK_POLLING=true
+    volumes:
+      - ./ui:/app
+    ports:
+      - "3001:3000" # Run on a different port to avoid conflict with dev
+    networks:
+      - scentmatch-network
+    depends_on:
+      - fastapi
+
+  # FastAPI Development Server (Test environment)
+  fastapi:
+    build: ./server
+    container_name: fastapi-server-test
+    command: pytest --disable-warnings  # Add pytest command here to run tests
+    environment:
+      - DATABASE_URL=postgres://user:password@postgres-db-test/scentmatch_test
+    depends_on:
+      - postgres-db-test
+    networks:
+      - scentmatch-network
+    expose:
+      - "8001"
+    ports:
+      - "8002:8001"
+    volumes:
+      - ./server:/app
+      - /app/venv
+
+
+  # PostgreSQL Test Database
+  postgres-db-test:
+    image: postgres:latest
+    container_name: postgres-db-test
+    environment:
+      POSTGRES_USER: scentmatch_user
+      POSTGRES_PASSWORD: scentmatch_password
+      POSTGRES_DB: scentmatch_test_db
+    volumes:
+      - postgres-data-test:/var/lib/postgresql/data
+    networks:
+      - scentmatch-network
+    ports:
+      - "5433:5432" # Use a different port to avoid conflict with dev DB
+
+  # MinIO Blob Storage (Test environment)
+  minio-blob-test:
+    image: minio/minio:latest
+    container_name: minio-blob-test
+    environment:
+      MINIO_ROOT_USER: minio
+      MINIO_ROOT_PASSWORD: minio123
+    entrypoint: /scripts/entrypoint.sh
+    ports:
+      - "9001:9000" # Use a different port to avoid conflict
+    networks:
+      - scentmatch-network
+    volumes:
+      - minio-data-test:/data
+      - ./scripts/entrypoint.sh:/scripts/entrypoint.sh
+      - ./scripts/init.sh:/scripts/init.sh
+      - ./blob_storage:/blob_storage
+
+networks:
+  scentmatch-network:
+    driver: bridge
+
+volumes:
+  postgres-data-test:
+  minio-data-test:
