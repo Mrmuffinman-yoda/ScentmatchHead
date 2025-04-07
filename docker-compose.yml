@@ -76,7 +76,7 @@ services:
       POSTGRES_DB: scentmatch_db
     volumes:
       - postgres-data:/var/lib/postgresql/data
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql # Optional init script
+      - ./config/db_init:/docker-entrypoint-initdb.d/  # Mount the whole db_init folder
     networks:
       - scentmatch-network
     ports:
@@ -89,6 +89,7 @@ services:
     environment:
       MINIO_ROOT_USER: minio
       MINIO_ROOT_PASSWORD: minio123
+    entrypoint: /docker-entrypoint-init.d/init.sh
     command: server /data --console-address ":9090"
     ports:
       - "9000:9000" # MinIO Web UI
@@ -97,8 +98,8 @@ services:
       - scentmatch-network
     volumes:
       - minio-data:/data # Persistent storage for MinIO
-      - ./init.sh:/docker-entrypoint-init.d/init.sh # Mount the init script
-      - ./blob_storage:/blob_storage # Mount the local blob_storage folder
+      - ./config/scripts:/docker-entrypoint-init.d/ # Mount the init script
+      - ./storage/blob_storage:/blob_storage # Mount the local blob_storage folder
 
   # Redis Cache
   redis:

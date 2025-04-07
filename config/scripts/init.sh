@@ -1,5 +1,11 @@
 #!/bin/sh
 
+# Start the MinIO server in the background
+minio server /data --console-address ":9090" &
+
+# Wait for the MinIO server to start
+sleep 5
+
 # Configure MinIO client
 mc alias set myminio http://localhost:9000 minio minio123
 
@@ -11,3 +17,5 @@ mc anonymous set download myminio/scentmatch
 
 # Upload all files from the "blob_storage" folder to the "scentmatch" bucket
 mc cp --recursive /blob_storage/ myminio/scentmatch/
+
+wait
