@@ -52,7 +52,12 @@ services:
     build: ./server # Path to your FastAPI app
     container_name: fastapi-server
     environment:
-      - DATABASE_URL=postgres://user:password@postgres-db/scentmatch
+      - DATABASE_URL=postgres://user:password@postgres-db-PRD/scentmatch
+      - DB_HOST=postgres-db-PRD
+      - DB_PORT=5432
+      - DB_NAME=scentmatch_db
+      - DB_USER=scentmatch_user
+      - DB_PASSWORD=scentmatch_password
     depends_on:
       - postgres-db
     networks:
@@ -65,11 +70,12 @@ services:
       - ./server:/app # Mount local code for live reloading
       - /app/venv # Prevents overwriting venv in container
       # TODO - remove live volume in production
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8001 --reload
 
   # PostgreSQL Database
-  postgres-db:
+  postgres-db-PRD:
     image: postgres:latest
-    container_name: postgres-db
+    container_name: postgres-db-PRD
     environment:
       POSTGRES_USER: scentmatch_user
       POSTGRES_PASSWORD: scentmatch_password

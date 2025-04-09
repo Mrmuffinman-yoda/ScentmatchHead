@@ -8,9 +8,15 @@ services:
     command: >
       sh -c "python /app/scripts/wait_for_postgres.py && pytest -s -vv"
     environment:
-      - DATABASE_URL=postgres://scentmatch_user:scentmatch_password@postgres-db-test:5432/scentmatch_test_db
+      - DB_HOST=postgres-db-TST
+      - DB_PORT=5432
+      - DB_NAME=scentmatch_tst_db
+      - DB_USER=TST_USER
+      - DB_PASSWORD=eAkYlkiNGbedEntiaNdoGRAnateanguLUBMiT
+      - REDIS_HOST=redis-TST
+      - REDIS_PORT=6379
     depends_on:
-      - postgres-db-test
+      - postgres-db-TST
       - minio-blob-test
     networks:
       - scentmatch-network
@@ -20,13 +26,15 @@ services:
       - ./server:/app  # Mount local code
 
   # PostgreSQL Test Database
-  postgres-db-test:
+  postgres-db-TST:
     image: postgres:latest
-    container_name: postgres-db-test
+    container_name: postgres-db-TST
     environment:
-      POSTGRES_USER: scentmatch_user
-      POSTGRES_PASSWORD: scentmatch_password
-      POSTGRES_DB: scentmatch_test_db
+      POSTGRES_USER: TST_USER
+      POSTGRES_PASSWORD: eAkYlkiNGbedEntiaNdoGRAnateanguLUBMiT
+      POSTGRES_DB: scentmatch_tst_db
+      REDIS_HOST: redis-TST
+      REDIS_PORT: 6379
     volumes:
       - postgres-data-test:/var/lib/postgresql/data
       - ./config/db_init:/docker-entrypoint-initdb.d/  # SQL init scripts
@@ -52,6 +60,14 @@ services:
       - minio-data-test:/data
       - ./config/scripts:/docker-entrypoint-init.d/
       - ./storage/blob_storage:/blob_storage
+  
+  redis-TST:
+    image: redis:latest
+    container_name: redis-TST
+    ports:
+      - "6379:6379"
+    networks:
+      - scentmatch-network
 
 networks:
   scentmatch-network:

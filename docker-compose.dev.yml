@@ -25,9 +25,17 @@ services:
     build: ./server # Path to your FastAPI app
     container_name: fastapi-server
     environment:
-      - DATABASE_URL=postgres://user:password@postgres-db/scentmatch
+      - DB_HOST=postgres-db-DEV
+      - DB_PORT=5432
+      - DB_NAME=scentmatch_dev_db
+      - DB_USER=DEV_USER
+      - DB_PASSWORD=abcd
+      - REDIS_HOST=redis-DEV
+      - REDIS_PORT=6379
     depends_on:
-      - postgres-db
+      - postgres-db-DEV
+      - minio-blob
+      - redis
     networks:
       - scentmatch-network
     expose:
@@ -36,16 +44,17 @@ services:
       - "8001:8001" # External port to access your app via HTTP
     volumes:
       - ./server:/app # Mount local code for live reloading
-      - /app/venv # Prevents overwriting venv in container
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8001 --reload --log-level debug
+
 
   # PostgreSQL Database
-  postgres-db:
+  postgres-db-DEV:
     image: postgres:latest
-    container_name: postgres-db
+    container_name: postgres-db-DEV
     environment:
-      POSTGRES_USER: scentmatch_user
-      POSTGRES_PASSWORD: scentmatch_password
-      POSTGRES_DB: scentmatch_db
+      POSTGRES_USER: DEV_USER
+      POSTGRES_PASSWORD: abcd
+      POSTGRES_DB: scentmatch_dev_db
     volumes:
       - postgres-data:/var/lib/postgresql/data
       - ./config/db_init:/docker-entrypoint-initdb.d/ # Mount the folder with init scripts
@@ -72,6 +81,13 @@ services:
       - minio-data:/data # Persistent storage for MinIO
       - ./config/scripts:/docker-entrypoint-init.d/ # Mount the init script
       - ./storage/blob_storage:/blob_storage # Mount the local blob_storage folder
+  redis:
+    image: redis:latest
+    container_name: redis-DEV
+    networks:
+      - scentmatch-network
+    ports:
+      - "6379:6379" # Redis default port
 networks:
   scentmatch-network:
     driver: bridge
