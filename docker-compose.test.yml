@@ -70,4 +70,5 @@ networks:
 
 volumes:
   postgres-data-test:
-  minio-data-test:
+  minio-blob-TST:
+  minio-data-TST:
