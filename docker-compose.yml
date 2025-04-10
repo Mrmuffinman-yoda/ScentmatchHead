@@ -1,14 +1,11 @@
-version: "3"
-
 services:
-  # NGINX Load Balancer
   nginx:
     image: nginx:latest
     container_name: nginx-load-balancer
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf
     ports:
-      - "8000:80" # External port to access your app via HTTP
+      - "8000:80"
     depends_on:
       - nextjs_1
       - nextjs_2
@@ -16,9 +13,10 @@ services:
     networks:
       - scentmatch-network
 
-  # 3 Next.js Servers (can be replicated)
   nextjs_1:
-    build: ./ui # Assuming you have a Next.js app folder with Dockerfile
+    build:
+      context: ./ui
+      target: prod
     container_name: nextjs-server-1
     environment:
       - NODE_ENV=production
@@ -28,7 +26,9 @@ services:
       - "3000"
 
   nextjs_2:
-    build: ./ui # Same as nextjs_1, pointing to Next.js app
+    build:
+      context: ./ui
+      target: prod
     container_name: nextjs-server-2
     environment:
       - NODE_ENV=production
@@ -38,7 +38,9 @@ services:
       - "3000"
 
   nextjs_3:
-    build: ./ui # Same as nextjs_1, pointing to Next.js app
+    build:
+      context: ./ui
+      target: prod
     container_name: nextjs-server-3
     environment:
       - NODE_ENV=production
@@ -47,10 +49,9 @@ services:
     expose:
       - "3000"
 
-  # FastAPI Server
   fastapi:
-    build: ./server # Path to your FastAPI app
-    container_name: fastapi-server
+    build: ./server
+    container_name: fastapi-server-PRD
     environment:
       - DATABASE_URL=postgres://user:password@postgres-db-PRD/scentmatch
       - DB_HOST=postgres-db-PRD
@@ -59,20 +60,17 @@ services:
       - DB_USER=scentmatch_user
       - DB_PASSWORD=scentmatch_password
     depends_on:
-      - postgres-db
+      - postgres-db-PRD
     networks:
       - scentmatch-network
     expose:
-      - "8001" # Port FastAPI will run on (internal)
+      - "8001"
     ports:
-      - "8001:8001" # External port to access your app via HTTP
+      - "8001:8001"
     volumes:
-      - ./server:/app # Mount local code for live reloading
-      - /app/venv # Prevents overwriting venv in container
-      # TODO - remove live volume in production
-    command: uvicorn app.main:app --host 0.0.0.0 --port 8001 --reload
+      - /app/venv
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8001
 
-  # PostgreSQL Database
   postgres-db-PRD:
     image: postgres:latest
     container_name: postgres-db-PRD
@@ -82,43 +80,43 @@ services:
       POSTGRES_DB: scentmatch_db
     volumes:
       - postgres-data:/var/lib/postgresql/data
-      - ./config/db_init:/docker-entrypoint-initdb.d/  # Mount the whole db_init folder
+      - ./config/db_init:/docker-entrypoint-initdb.d/
     networks:
       - scentmatch-network
     ports:
-      - "5432:5432" # PostgreSQL port
+      - "5432:5432"
 
-  # MinIO Blob Storage
-  minio-blob:
+  minio-blob-PRD:
     image: minio/minio:latest
-    container_name: minio-blob
+    container_name: minio-blob-PRD
     environment:
       MINIO_ROOT_USER: minio
       MINIO_ROOT_PASSWORD: minio123
     entrypoint: /docker-entrypoint-init.d/init.sh
     command: server /data --console-address ":9090"
     ports:
-      - "9000:9000" # MinIO Web UI
-      - "9090:9090" # MinIO Console
+      - "9000:9000"
+      - "9090:9090"
     networks:
       - scentmatch-network
     volumes:
-      - minio-data:/data # Persistent storage for MinIO
-      - ./config/scripts:/docker-entrypoint-init.d/ # Mount the init script
-      - ./storage/blob_storage:/blob_storage # Mount the local blob_storage folder
+      - minio-data:/data
+      - ./config/scripts:/docker-entrypoint-init.d/
+      - ./storage/blob_storage:/blob_storage
 
-  # Redis Cache
   redis:
     image: redis:latest
     container_name: redis-cache
     networks:
       - scentmatch-network
     ports:
-      - "6379:6379" # Redis default port
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
 
 networks:
   scentmatch-network:
-    driver: bridge
+    driver: overlay
 
 volumes:
   postgres-data:

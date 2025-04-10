@@ -1,7 +1,4 @@
-version: "3"
-
 services:
-  # FastAPI Test Server
   fastapi:
     build: ./server
     container_name: fastapi-server-test
@@ -17,15 +14,14 @@ services:
       - REDIS_PORT=6379
     depends_on:
       - postgres-db-TST
-      - minio-blob-test
+      - minio-blob-TST
     networks:
       - scentmatch-network
     ports:
       - "8002:8001"
     volumes:
-      - ./server:/app  # Mount local code
+      - ./server:/app
 
-  # PostgreSQL Test Database
   postgres-db-TST:
     image: postgres:latest
     container_name: postgres-db-TST
@@ -37,16 +33,15 @@ services:
       REDIS_PORT: 6379
     volumes:
       - postgres-data-test:/var/lib/postgresql/data
-      - ./config/db_init:/docker-entrypoint-initdb.d/  # SQL init scripts
+      - ./config/db_init:/docker-entrypoint-initdb.d/
     networks:
       - scentmatch-network
     ports:
       - "5433:5432"
 
-  # MinIO Test Storage
-  minio-blob-test:
+  minio-blob-TST:
     image: minio/minio:latest
-    container_name: minio-blob-test
+    container_name: minio-blob-TST
     environment:
       MINIO_ROOT_USER: minio
       MINIO_ROOT_PASSWORD: minio123
@@ -57,10 +52,10 @@ services:
     networks:
       - scentmatch-network
     volumes:
-      - minio-data-test:/data
+      - minio-data-TST:/data
       - ./config/scripts:/docker-entrypoint-init.d/
       - ./storage/blob_storage:/blob_storage
-  
+
   redis-TST:
     image: redis:latest
     container_name: redis-TST

@@ -1,28 +1,23 @@
-version: "3"
-
 services:
-  # Next.js Development Server
   nextjs:
     build:
       context: ./ui
-      target: dev # Use the dev stage in the Dockerfile
+      target: dev
     container_name: nextjs-server
     environment:
       - NODE_ENV=development
-      - WATCHPACK_POLLING=true # For file watching in Docker
+      - WATCHPACK_POLLING=true
     volumes:
-      - ./ui:/app # Mount local code for live reloading
-      # - ./ui/node_modules:/app/node_modules # Use host's node_modules
+      - ./ui:/app
     ports:
-      - "3000:3000" # Port for Next.js development server
+      - "3000:3000"
     networks:
       - scentmatch-network
     depends_on:
       - fastapi
 
-  # FastAPI Development Server
   fastapi:
-    build: ./server # Path to your FastAPI app
+    build: ./server
     container_name: fastapi-server
     environment:
       - DB_HOST=postgres-db-DEV
@@ -39,15 +34,13 @@ services:
     networks:
       - scentmatch-network
     expose:
-      - "8001" # Port FastAPI will run on (internal)
+      - "8001"
     ports:
-      - "8001:8001" # External port to access your app via HTTP
+      - "8001:8001"
     volumes:
-      - ./server:/app # Mount local code for live reloading
+      - ./server:/app
     command: uvicorn app.main:app --host 0.0.0.0 --port 8001 --reload --log-level debug
 
-
-  # PostgreSQL Database
   postgres-db-DEV:
     image: postgres:latest
     container_name: postgres-db-DEV
@@ -57,13 +50,12 @@ services:
       POSTGRES_DB: scentmatch_dev_db
     volumes:
       - postgres-data:/var/lib/postgresql/data
-      - ./config/db_init:/docker-entrypoint-initdb.d/ # Mount the folder with init scripts
+      - ./config/db_init:/docker-entrypoint-initdb.d/
     networks:
       - scentmatch-network
     ports:
       - "5432:5432"
 
-  # MinIO Blob Storage
   minio-blob:
     image: minio/minio:latest
     container_name: minio-blob
@@ -73,21 +65,21 @@ services:
     entrypoint: /docker-entrypoint-init.d/init.sh
     command: server /data --console-address ":9090"
     ports:
-      - "9000:9000" # MinIO Web UI
-      - "9090:9090" # MinIO Console
+      - "9000:9000"
+      - "9090:9090"
     networks:
       - scentmatch-network
     volumes:
-      - minio-data:/data # Persistent storage for MinIO
-      - ./config/scripts:/docker-entrypoint-init.d/ # Mount the init script
-      - ./storage/blob_storage:/blob_storage # Mount the local blob_storage folder
+      - minio-data:/data
+      - ./config/scripts:/docker-entrypoint-init.d/
+      - ./storage/blob_storage:/blob_storage
   redis:
     image: redis:latest
     container_name: redis-DEV
     networks:
       - scentmatch-network
     ports:
-      - "6379:6379" # Redis default port
+      - "6379:6379"
 networks:
   scentmatch-network:
     driver: bridge
