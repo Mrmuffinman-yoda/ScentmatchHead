@@ -48,10 +48,12 @@ services:
       - scentmatch-network
     expose:
       - "3000"
+    depends_on:
+      - fastapi
 
   fastapi:
     build: ./server
-    container_name: fastapi-server-PRD
+    container_name: fastapi-server
     environment:
       - DATABASE_URL=postgres://user:password@postgres-db-PRD/scentmatch
       - DB_HOST=postgres-db-PRD
@@ -59,6 +61,8 @@ services:
       - DB_NAME=scentmatch_db
       - DB_USER=scentmatch_user
       - DB_PASSWORD=scentmatch_password
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
     depends_on:
       - postgres-db-PRD
     networks:
@@ -68,7 +72,7 @@ services:
     ports:
       - "8001:8001"
     volumes:
-      - /app/venv
+      - ./server:/app
     command: uvicorn app.main:app --host 0.0.0.0 --port 8001
 
   postgres-db-PRD:
@@ -116,8 +120,9 @@ services:
 
 networks:
   scentmatch-network:
-    driver: overlay
+    driver: bridge
 
 volumes:
   postgres-data:
   minio-data:
+  redis-data:
