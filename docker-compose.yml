@@ -89,6 +89,7 @@ services:
       - scentmatch-network
     ports:
       - "5432:5432"
+    mem_limit: 300m
 
   minio-blob-PRD:
     image: minio/minio:latest
@@ -117,6 +118,7 @@ services:
       - "6379:6379"
     volumes:
       - redis-data:/data
+    mem_limit: 300m
 
 networks:
   scentmatch-network:
