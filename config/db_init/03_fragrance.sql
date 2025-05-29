@@ -1,56 +1,36 @@
 -- Create the fragrance table
-CREATE TABLE
-  IF NOT EXISTS fragrance (
-    id SERIAL PRIMARY KEY,
-    name VARCHAR(50) NOT NULL,
-    description TEXT,
-    price DECIMAL(10, 2) NOT NULL,
-    scent_profile VARCHAR(50),
-    house_id INT NOT NULL,
-    FOREIGN KEY (house_id) REFERENCES fragrance_house (id)
-  );
+CREATE TABLE IF NOT EXISTS fragrance (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(50) NOT NULL,
+  description TEXT,
+  slug VARCHAR(50) NOT NULL, -- This is a combination of the house+fragname e.g dior+homme-intense-2025
+  imageurl VARCHAR(255) NOT NULL
+);
 
--- Insert data into the fragrance table
-INSERT INTO
-  fragrance (name, description, price, scent_profile, house_id)
+-- Create the fragrance_top_clones table
+CREATE TABLE IF NOT EXISTS fragrance_top_clones (
+  id SERIAL PRIMARY KEY,
+  fragrance_id INT NOT NULL,
+  clone_id INT NOT NULL,
+  rank INT NOT NULL,
+  FOREIGN KEY (fragrance_id) REFERENCES fragrance(id),
+  FOREIGN KEY (clone_id) REFERENCES fragrance(id)
+);
+
+-- Insert main fragrance
+INSERT INTO fragrance (name, description, slug, imageurl)
 VALUES
-  -- Dior Homme Intense 2025
-  (
-    'Homme Intense',
-    'A rich and intense fragrance with notes of iris, amber, and leather.',
-    120.00,
-    'Woody Floral',
-    1
-  ),
-  -- Lattafa Raghba
-  (
-    'Raghba',
-    'A sweet and spicy fragrance with notes of vanilla, oud, and amber.',
-    50.00,
-    'Oriental Spicy',
-    2
-  ),
-  -- Al Haramain Amber Oud
-  (
-    'Amber Oud',
-    'A luxurious fragrance with notes of oud, amber, and spices.',
-    80.00,
-    'Oriental Woody',
-    3
-  );
+  ('Dior Homme Intense 2025', 'A sophisticated and modern fragrance featuring powdery iris, amber, and woody notes.', 'dior-homme-intense-2025', 'https://placehold.co/1920x1080');
 
--- Create the fragrance_top table
-CREATE TABLE
-  IF NOT EXISTS fragrance_top (
-    id SERIAL PRIMARY KEY,
-    fragrance_id INT NOT NULL,
-    rank INT NOT NULL,
-    FOREIGN KEY (fragrance_id) REFERENCES fragrance (id)
-  );
-
--- Insert data into the fragrance_top table
-INSERT INTO
-  fragrance_top (fragrance_id, rank)
+-- Insert clones
+INSERT INTO fragrance (name, description, slug, imageurl)
 VALUES
-  (1, 1),
-  (2, 2);
+  ('Kayaan Classic', 'A clone of Dior Homme Intense.', 'kayaan-classic', 'https://placehold.co/1920x1080'),
+  ('His Confession by Lattafa', 'A clone of Dior Homme Intense.', 'lattafa-his-confession', 'https://placehold.co/1920x1080'),
+  ('Dark Door by Maison Alhambra', 'A clone of Dior Homme Intense.', 'maison-alhambra-dark-door', 'https://placehold.co/1920x1080');
+
+INSERT INTO fragrance_top_clones (fragrance_id, clone_id, rank)
+VALUES
+  (1, 2, 2), -- 1st clone
+  (1, 3, 1), -- 2nd clone
+  (1, 4, 3); -- 3rd clone
