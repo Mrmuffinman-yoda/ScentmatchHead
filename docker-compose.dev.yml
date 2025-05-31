@@ -29,7 +29,7 @@ services:
       - REDIS_PORT=6379
     depends_on:
       - postgres-db-DEV
-      - minio-blob
+      - minio
       - redis
     networks:
       - scentmatch-network
@@ -56,9 +56,9 @@ services:
     ports:
       - "5432:5432"
 
-  minio-blob:
+  minio:
     image: minio/minio:latest
-    container_name: minio-blob
+    container_name: minio
     environment:
       MINIO_ROOT_USER: minio
       MINIO_ROOT_PASSWORD: minio123

@@ -74,9 +74,9 @@ services:
       - "5432:5432"
     mem_limit: 300m
 
-  minio-blob-PRD:
+  minio:
     image: minio/minio:latest
-    container_name: minio-blob-PRD
+    container_name: minio
     environment:
       MINIO_ROOT_USER: minio
       MINIO_ROOT_PASSWORD: minio123
