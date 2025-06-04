@@ -2,10 +2,16 @@ x-nextjs-service: &nextjs-service
   build:
     context: ./ui
     target: prod
+    # Use BuildKit inline cache for faster rebuilds
+    cache_from:
+      - type=local,src=./.buildx-cache
+      - type=registry,ref=yourrepo/yourimage:buildcache
+  image: scentmatch-nextjs:latest
   environment:
     - NODE_ENV=production
   networks:
     - scentmatch-network
+  restart: unless-stopped
 
 services:
   nginx:
@@ -21,20 +27,24 @@ services:
       - nextjs_3
     networks:
       - scentmatch-network
+    restart: unless-stopped
 
   nextjs_1:
     <<: *nextjs-service
     container_name: nextjs-server-1
+    restart: unless-stopped
 
   nextjs_2:
     <<: *nextjs-service
     container_name: nextjs-server-2
+    restart: unless-stopped
 
   nextjs_3:
     <<: *nextjs-service
     container_name: nextjs-server-3
     depends_on:
       - fastapi
+    restart: unless-stopped
 
   fastapi:
     build: ./server
@@ -57,6 +67,12 @@ services:
     volumes:
       - ./server:/app
     command: uvicorn app.main:app --host 0.0.0.0 --port 8001
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8001/docs"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
 
   postgres-db-PRD:
     image: postgres:latest
@@ -73,6 +89,12 @@ services:
     ports:
       - "5432:5432"
     mem_limit: 300m
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U scentmatch_user"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
 
   minio:
     image: minio/minio:latest
@@ -91,6 +113,7 @@ services:
       - minio-data:/data
       - ./config/scripts:/docker-entrypoint-init.d/
       - ./storage/blob_storage:/blob_storage
+    restart: unless-stopped
 
   redis:
     image: redis:latest
@@ -102,6 +125,12 @@ services:
     volumes:
       - redis-data:/data
     mem_limit: 300m
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
 
 networks:
   scentmatch-network:
