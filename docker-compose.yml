@@ -2,10 +2,6 @@ x-nextjs-service: &nextjs-service
   build:
     context: ./ui
     target: prod
-    # Use BuildKit inline cache for faster rebuilds
-    cache_from:
-      - type=local,src=./.buildx-cache
-      - type=registry,ref=yourrepo/yourimage:buildcache
   image: scentmatch-nextjs:latest
   environment:
     - NODE_ENV=production
