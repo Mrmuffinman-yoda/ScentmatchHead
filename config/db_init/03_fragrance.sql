@@ -3,8 +3,7 @@ CREATE TABLE IF NOT EXISTS fragrance (
   id SERIAL PRIMARY KEY,
   name VARCHAR(50) NOT NULL,
   description TEXT,
-  slug VARCHAR(50) NOT NULL, -- This is a combination of the house+fragname e.g dior+homme-intense-2025
-  imageurl VARCHAR(255) NOT NULL
+  slug VARCHAR(50) NOT NULL -- This is a combination of the house+fragname e.g dior+homme-intense-2025
 );
 
 -- Create the fragrance_top_clones table
@@ -18,16 +17,16 @@ CREATE TABLE IF NOT EXISTS fragrance_top_clones (
 );
 
 -- Insert main fragrance
-INSERT INTO fragrance (name, description, slug, imageurl)
+INSERT INTO fragrance (name, description, slug)
 VALUES
-  ('Dior Homme Intense 2025', 'A sophisticated and modern fragrance featuring powdery iris, amber, and woody notes.', 'dior-homme-intense-2025', 'https://placehold.co/1920x1080');
+  ('Dior Homme Parfum 2025', 'A sophisticated and modern fragrance featuring powdery iris, amber, and woody notes.', 'dior-homme-parfum-2025');
 
 -- Insert clones
-INSERT INTO fragrance (name, description, slug, imageurl)
+INSERT INTO fragrance (name, description, slug)
 VALUES
-  ('Kayaan Classic', 'A clone of Dior Homme Intense.', 'kayaan-classic', 'https://placehold.co/1920x1080'),
-  ('His Confession by Lattafa', 'A clone of Dior Homme Intense.', 'lattafa-his-confession', 'https://placehold.co/1920x1080'),
-  ('Dark Door by Maison Alhambra', 'A clone of Dior Homme Intense.', 'maison-alhambra-dark-door', 'https://placehold.co/1920x1080');
+  ('Kayaan Classic', 'A clone of Dior Homme Parfum 2025.', 'kayaan-classic'),
+  ('His Confession', 'A clone of Dior Homme Parfum 2025.', 'lattafa-his-confession'),
+  ('Dark Door Intense', 'A clone of Dior Homme Parfum 2025.', 'maison-alhambra-dark-door-intense');
 
 INSERT INTO fragrance_top_clones (fragrance_id, clone_id, rank)
 VALUES
