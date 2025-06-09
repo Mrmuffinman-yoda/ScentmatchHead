@@ -1,35 +1,77 @@
 -- Create the fragrance table
-CREATE TABLE IF NOT EXISTS fragrance (
-  id SERIAL PRIMARY KEY,
-  name VARCHAR(50) NOT NULL,
-  description TEXT,
-  slug VARCHAR(50) NOT NULL -- This is a combination of the house+fragname e.g dior+homme-intense-2025
-);
+CREATE TABLE
+  IF NOT EXISTS fragrance (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(50) NOT NULL,
+    description TEXT,
+    slug VARCHAR(50) NOT NULL -- This is a combination of the house+fragname e.g dior+homme-intense-2025
+  );
 
 -- Create the fragrance_top_clones table
-CREATE TABLE IF NOT EXISTS fragrance_top_clones (
-  id SERIAL PRIMARY KEY,
-  fragrance_id INT NOT NULL,
-  clone_id INT NOT NULL,
-  rank INT NOT NULL,
-  FOREIGN KEY (fragrance_id) REFERENCES fragrance(id),
-  FOREIGN KEY (clone_id) REFERENCES fragrance(id)
-);
+CREATE TABLE
+  IF NOT EXISTS fragrance_top_clones (
+    id SERIAL PRIMARY KEY,
+    fragrance_id INT NOT NULL,
+    clone_id INT NOT NULL,
+    rank INT NOT NULL,
+    FOREIGN KEY (fragrance_id) REFERENCES fragrance (id),
+    FOREIGN KEY (clone_id) REFERENCES fragrance (id)
+  );
 
 -- Insert main fragrance
-INSERT INTO fragrance (name, description, slug)
+INSERT INTO
+  fragrance (name, description, slug)
 VALUES
-  ('Dior Homme Parfum 2025', 'A sophisticated and modern fragrance featuring powdery iris, amber, and woody notes.', 'dior-homme-parfum-2025');
+  (
+    'Dior Homme Parfum 2025',
+    'A sophisticated and modern fragrance featuring powdery iris, amber, and woody notes.',
+    'dior-homme-parfum-2025'
+  );
 
 -- Insert clones
-INSERT INTO fragrance (name, description, slug)
+INSERT INTO
+  fragrance (name, description, slug)
 VALUES
-  ('Kayaan Classic', 'A clone of Dior Homme Parfum 2025.', 'kayaan-classic'),
-  ('His Confession', 'A clone of Dior Homme Parfum 2025.', 'lattafa-his-confession'),
-  ('Dark Door Intense', 'A clone of Dior Homme Parfum 2025.', 'maison-alhambra-dark-door-intense');
+  (
+    'Kayaan Classic',
+    'A clone of Dior Homme Parfum 2025.',
+    'kayaan-classic'
+  ),
+  (
+    'His Confession',
+    'A clone of Dior Homme Parfum 2025.',
+    'lattafa-his-confession'
+  ),
+  (
+    'Dark Door Intense',
+    'A clone of Dior Homme Parfum 2025.',
+    'maison-alhambra-dark-door-intense'
+  );
 
-INSERT INTO fragrance_top_clones (fragrance_id, clone_id, rank)
+INSERT INTO
+  fragrance_top_clones (fragrance_id, clone_id, rank)
 VALUES
   (1, 2, 2), -- 1st clone
   (1, 3, 1), -- 2nd clone
-  (1, 4, 3); -- 3rd clone
+  (1, 4, 3);
+
+-- 3rd clone
+-- Table of fragrance accords for each fragrance
+-- fragrance slug + accord
+CREATE TABLE
+  IF NOT EXISTS fragrance_accords (
+    id SERIAL PRIMARY KEY,
+    slug VARCHAR(50) NOT NULL,
+    accord VARCHAR(50) NOT NULL,
+    percentage INT NOT NULL
+  );
+
+-- Insert fragrance accords
+INSERT INTO
+  fragrance_accords (slug, accord, percentage)
+VALUES
+  ('dior-homme-parfum-2025', 'Iris', 45),
+  ('dior-homme-parfum-2025', 'Amber', 25),
+  ('dior-homme-parfum-2025', 'Vetiver', 10),
+  ('dior-homme-parfum-2025', 'Cedar', 10),
+  ('dior-homme-parfum-2025', 'Lavender', 10);
