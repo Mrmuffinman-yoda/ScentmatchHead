@@ -6,8 +6,8 @@ minio server /data --console-address ":9090" &
 # Wait for the MinIO server to start
 sleep 5
 
-# Configure MinIO client
-mc alias set myminio http://localhost:9000 minio minio123
+# Configure MinIO client using environment variables
+mc alias set myminio http://localhost:9000 "$MINIO_ROOT_USER" "$MINIO_ROOT_PASSWORD"
 
 # Create the "scentmatch" bucket
 mc mb myminio/scentmatch

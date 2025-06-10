@@ -14,12 +14,18 @@ def generate_key(length=32):
     return ''.join(secrets.choice(characters) for _ in range(length))
 
 def main():
+    
+    dev_db = generate_key()
+    prod_db = generate_key()
+    test_db = generate_key()
     dev_env = {
         "DB_HOST": "postgres-db-DEV",
         "DB_PORT": "5432",
         "DB_NAME": "scentmatch_dev_db",
         "DB_USER": "DEV_USER",
-        "DB_PASSWORD": generate_key(),
+        "POSTGRES_USER": "DEV_USER",
+        "POSTGRES_PASSWORD": dev_db,
+        "POSTGRES_DB": "scentmatch_dev_db",
         "REDIS_HOST": "redis-DEV",
         "REDIS_PORT": "6379",
         "MINIO_ROOT_USER": "minio",
@@ -33,7 +39,9 @@ def main():
         "DB_PORT": "5432",
         "DB_NAME": "scentmatch_db",
         "DB_USER": "scentmatch_user",
-        "DB_PASSWORD": generate_key(),
+        "POSTGRES_USER": "scentmatch_user",
+        "POSTGRES_PASSWORD": prod_db,
+        "POSTGRES_DB": "scentmatch_db",
         "REDIS_HOST": "redis",
         "REDIS_PORT": "6379",
         "MINIO_ROOT_USER": "minio",
@@ -45,7 +53,9 @@ def main():
         "DB_PORT": "5432",
         "DB_NAME": "scentmatch_tst_db",
         "DB_USER": "TST_USER",
-        "DB_PASSWORD": generate_key(),
+        "POSTGRES_USER": "TST_USER",
+        "POSTGRES_PASSWORD": test_db,
+        "POSTGRES_DB": "scentmatch_tst_db",
         "REDIS_HOST": "redis-TST",
         "REDIS_PORT": "6379",
         "MINIO_ROOT_USER": "minio",
