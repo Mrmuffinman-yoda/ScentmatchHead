@@ -3,9 +3,6 @@
 This is the main orchestrator repo for the ScentMatch project. It brings together everything needed to run the full app stack.
 To run the program first clone the repo then run
 
- >🔒 This repo is private — even if scentmatchui and scentmatchserver are public, this head won't be accessible unless you have explicit access.
-
-
 ## 🔨Getting Started
 
 ### 1. Clone the repo
