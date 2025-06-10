@@ -35,3 +35,35 @@ clone_repo "https://github.com/Mrmuffinman-yoda/ScentMatchServer" "./server"
 clone_repo "https://github.com/Mrmuffinman-yoda/ScentMatch" "./ui"
 
 echo "Completed all clone operations"
+
+echo "Initialising environment variables..."
+python3 config/env/start.py
+if [ $? -eq 0 ]; then
+    echo "Environment variables initialized successfully"
+else
+    echo "Failed to initialize environment variables"
+    exit 1
+fi
+
+echo "Installing pnpm..."
+npm install -g pnpm
+
+if [ $? -eq 0 ]; then
+    echo "pnpm installed successfully"
+else
+    echo "Failed to install pnpm"
+    exit 1
+fi
+
+echo "Installing dependencies for the UI..."
+cd ./ui
+pnpm install
+
+if [ $? -eq 0 ]; then
+    echo "UI dependencies installed successfully"
+else
+    echo "Failed to install UI dependencies"
+    exit 1
+fi
+
+echo "Your ScentMatch environment is ready to use!"
