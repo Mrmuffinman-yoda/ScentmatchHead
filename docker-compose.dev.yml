@@ -4,9 +4,8 @@ services:
       context: ./ui
       target: dev
     container_name: nextjs-server
-    environment:
-      - NODE_ENV=development
-      - WATCHPACK_POLLING=true
+    env_file:
+      - ./config/env/.env.dev
     volumes:
       - ./ui:/app
     ports:
@@ -19,14 +18,8 @@ services:
   fastapi:
     build: ./server
     container_name: fastapi-server
-    environment:
-      - DB_HOST=postgres-db-DEV
-      - DB_PORT=5432
-      - DB_NAME=scentmatch_dev_db
-      - DB_USER=DEV_USER
-      - DB_PASSWORD=abcd
-      - REDIS_HOST=redis-DEV
-      - REDIS_PORT=6379
+    env_file:
+      - ./config/env/.env.dev
     depends_on:
       - postgres-db-DEV
       - minio
@@ -44,10 +37,8 @@ services:
   postgres-db-DEV:
     image: postgres:latest
     container_name: postgres-db-DEV
-    environment:
-      POSTGRES_USER: DEV_USER
-      POSTGRES_PASSWORD: abcd
-      POSTGRES_DB: scentmatch_dev_db
+    env_file:
+      - ./config/env/.env.dev
     volumes:
       - postgres-data:/var/lib/postgresql/data
       - ./config/db_init:/docker-entrypoint-initdb.d/
@@ -59,9 +50,8 @@ services:
   minio:
     image: minio/minio:latest
     container_name: minio
-    environment:
-      MINIO_ROOT_USER: minio
-      MINIO_ROOT_PASSWORD: minio123
+    env_file:
+      - ./config/env/.env.dev
     entrypoint: /docker-entrypoint-init.d/init.sh
     command: server /data --console-address ":9090"
     ports:

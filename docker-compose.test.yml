@@ -4,14 +4,8 @@ services:
     container_name: fastapi-server-test
     command: >
       sh -c "python /app/scripts/wait_for_postgres.py && pytest -s -vv"
-    environment:
-      - DB_HOST=postgres-db-TST
-      - DB_PORT=5432
-      - DB_NAME=scentmatch_tst_db
-      - DB_USER=TST_USER
-      - DB_PASSWORD=eAkYlkiNGbedEntiaNdoGRAnateanguLUBMiT
-      - REDIS_HOST=redis-TST
-      - REDIS_PORT=6379
+    env_file:
+      - ./config/env/.env.test
     depends_on:
       - postgres-db-TST
     networks:
@@ -24,12 +18,8 @@ services:
   postgres-db-TST:
     image: postgres:latest
     container_name: postgres-db-TST
-    environment:
-      POSTGRES_USER: TST_USER
-      POSTGRES_PASSWORD: eAkYlkiNGbedEntiaNdoGRAnateanguLUBMiT
-      POSTGRES_DB: scentmatch_tst_db
-      REDIS_HOST: redis-TST
-      REDIS_PORT: 6379
+    env_file:
+      - ./config/env/.env.test
     volumes:
       - postgres-data-test:/var/lib/postgresql/data
       - ./config/db_init:/docker-entrypoint-initdb.d/
