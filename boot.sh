@@ -45,16 +45,6 @@ else
     exit 1
 fi
 
-echo "Installing pnpm..."
-npm install -g pnpm
-
-if [ $? -eq 0 ]; then
-    echo "pnpm installed successfully"
-else
-    echo "Failed to install pnpm"
-    exit 1
-fi
-
 echo "Installing dependencies for the UI..."
 cd ./ui
 pnpm install
