@@ -3,6 +3,7 @@ CREATE TABLE
   IF NOT EXISTS fragrance (
     id SERIAL PRIMARY KEY,
     name VARCHAR(50) NOT NULL,
+    house_id INT NOT NULL,
     description TEXT,
     slug VARCHAR(50) NOT NULL -- This is a combination of the house+fragname e.g dior+homme-intense-2025
   );
@@ -20,30 +21,34 @@ CREATE TABLE
 
 -- Insert main fragrance
 INSERT INTO
-  fragrance (name, description, slug)
+  fragrance (name, house_id, description, slug)
 VALUES
   (
     'Dior Homme Parfum 2025',
+    5,
     'A sophisticated and modern fragrance featuring powdery iris, amber, and woody notes.',
     'dior-homme-parfum-2025'
   );
 
 -- Insert clones
 INSERT INTO
-  fragrance (name, description, slug)
+  fragrance (name, house_id, description, slug)
 VALUES
   (
     'Kayaan Classic',
+    2,
     'A clone of Dior Homme Parfum 2025.',
     'kayaan-classic'
   ),
   (
     'His Confession',
+    1,
     'A clone of Dior Homme Parfum 2025.',
     'lattafa-his-confession'
   ),
   (
     'Dark Door Intense',
+    3,
     'A clone of Dior Homme Parfum 2025.',
     'maison-alhambra-dark-door-intense'
   );
