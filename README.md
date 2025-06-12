@@ -3,6 +3,13 @@
 This is the main orchestrator repo for the ScentMatch project. It brings together everything needed to run the full app stack.
 To run the program first clone the repo then run
 
+
+## Requirements ⚙️
+- Docker
+- Nodejs
+- pnpm
+
+
 ## 🔨Getting Started
 
 ### 1. Clone the repo
