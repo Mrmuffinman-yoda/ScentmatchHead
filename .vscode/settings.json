@@ -18,5 +18,15 @@
     "titleBar.inactiveBackground": "#f7eb7b99",
     "titleBar.inactiveForeground": "#15202b99"
   },
-  "peacock.remoteColor": "#f7eb7b"
+  "peacock.remoteColor": "#f7eb7b",
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/.next": true,
+    "**/dist": true,
+    "**/out": true,
+    "**/.git": true,
+    "**/.turbo": true,
+    "**/storage": true,
+    "**/.vscode": false,
+  }
 }

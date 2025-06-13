@@ -1,0 +1,30 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Build: Start Dev Environment",
+      "type": "shell",
+      "command": "bash shutdown.sh && bash run_dev.sh",
+      "problemMatcher": [],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    { 
+        "label": "Start Prod Environment",
+        "type": "shell",
+        "command": "bash shutdown.sh && bash run_prod.sh",
+        "problemMatcher": [],
+    },
+    {
+        "label" : "Run Tests",
+        "type": "shell",
+        "command": "bash shutdown.sh && bash run_tests.sh",
+        "problemMatcher": [],
+        "group": {
+          "kind": "test",
+        }
+    }
+  ]
+}

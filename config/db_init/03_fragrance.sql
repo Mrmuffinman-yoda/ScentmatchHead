@@ -38,7 +38,7 @@ VALUES
     'Kayaan Classic',
     2,
     'A clone of Dior Homme Parfum 2025.',
-    'kayaan-classic'
+    'al-wataniah-kayaan-classic'
   ),
   (
     'His Confession',
