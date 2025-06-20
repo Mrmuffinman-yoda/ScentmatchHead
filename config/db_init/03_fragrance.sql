@@ -27,7 +27,7 @@ VALUES
     'Dior Homme Parfum 2025',
     5,
     'A sophisticated and modern fragrance featuring powdery iris, amber, and woody notes.',
-    'dior-homme-parfum-2025'
+    'homme-parfum-2025'
   );
 
 -- Insert clones
@@ -38,19 +38,19 @@ VALUES
     'Kayaan Classic',
     2,
     'A clone of Dior Homme Parfum 2025.',
-    'al-wataniah-kayaan-classic'
+    'kayaan-classic'
   ),
   (
     'His Confession',
     1,
     'A clone of Dior Homme Parfum 2025.',
-    'lattafa-his-confession'
+    'his-confession'
   ),
   (
     'Dark Door Intense',
     3,
     'A clone of Dior Homme Parfum 2025.',
-    'maison-alhambra-dark-door-intense'
+    'dark-door-intense'
   );
 
 INSERT INTO
@@ -75,8 +75,8 @@ CREATE TABLE
 INSERT INTO
   fragrance_accords (slug, accord, percentage)
 VALUES
-  ('dior-homme-parfum-2025', 'Iris', 45),
-  ('dior-homme-parfum-2025', 'Amber', 25),
-  ('dior-homme-parfum-2025', 'Vetiver', 10),
-  ('dior-homme-parfum-2025', 'Cedar', 10),
-  ('dior-homme-parfum-2025', 'Lavender', 10);
+  ('homme-parfum-2025', 'Iris', 45),
+  ('homme-parfum-2025', 'Amber', 25),
+  ('homme-parfum-2025', 'Vetiver', 10),
+  ('homme-parfum-2025', 'Cedar', 10),
+  ('homme-parfum-2025', 'Lavender', 10);

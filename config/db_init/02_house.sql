@@ -1,4 +1,3 @@
--- This SQL script creates a table for fragrance houses with the following columns:
 CREATE TABLE
     IF NOT EXISTS fragrance_house (
         id SERIAL PRIMARY KEY,
@@ -6,7 +5,6 @@ CREATE TABLE
         name VARCHAR(50) NOT NULL,
         founded INT NOT NULL,
         country_of_origin VARCHAR(50) NOT NULL,
-
         website_url VARCHAR(255) NOT NULL,
         description TEXT NOT NULL
     );
@@ -30,8 +28,8 @@ VALUES
         'Lattafa is a fragrance house known for its unique and captivating scents.'
     ),
     (
-        'Al Watania',
-        'al-watania',
+        'Al Wataniah',
+        'al-wataniah',
         1970,
         'Saudi Arabia',
         'https://example.com',
