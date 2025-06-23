@@ -31,7 +31,8 @@ def main():
         "MINIO_ROOT_USER": "minio",
         "MINIO_ROOT_PASSWORD": generate_key(),
         "NODE_ENV": "development",
-        "WATCHPACK_POLLING": "true"
+        "WATCHPACK_POLLING": "true",
+        "NEXT_TELEMETRY_DISABLED": "1",
     }
     prod_env = {
         "DATABASE_URL": "postgres://user:password@postgres-db-PRD/scentmatch",
@@ -46,7 +47,9 @@ def main():
         "REDIS_PORT": "6379",
         "MINIO_ROOT_USER": "minio",
         "MINIO_ROOT_PASSWORD": generate_key(),
-        "NODE_ENV": "production"
+        "NODE_ENV": "production",
+        "BASE_URL": "https://scentmatch.harison.cloud",
+        "NEXT_TELEMETRY_DISABLED": "1",
     }
     test_env = {
         "DB_HOST": "postgres-db-TST",
@@ -59,7 +62,8 @@ def main():
         "REDIS_HOST": "redis-TST",
         "REDIS_PORT": "6379",
         "MINIO_ROOT_USER": "minio",
-        "MINIO_ROOT_PASSWORD": generate_key()
+        "MINIO_ROOT_PASSWORD": generate_key(),
+        "NEXT_TELEMETRY_DISABLED": "1",
     }
 
     write_env_file("config/env/.env.prod", prod_env)
