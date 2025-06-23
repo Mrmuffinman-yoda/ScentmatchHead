@@ -7,4 +7,4 @@ rm -rf package-lock.json
 rm -rf .next
 cd ..
 cd server/app
-rm -rf __pycache__
+find . -type d -name "__pycache__" -exec rm -rf {} +
