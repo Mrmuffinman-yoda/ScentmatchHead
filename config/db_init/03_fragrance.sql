@@ -79,4 +79,12 @@ VALUES
   ('homme-parfum-2025', 'Amber', 25),
   ('homme-parfum-2025', 'Vetiver', 10),
   ('homme-parfum-2025', 'Cedar', 10),
-  ('homme-parfum-2025', 'Lavender', 10);
+  ('homme-parfum-2025', 'Lavender', 10),
+  ('kayaan-classic', 'Powdery', 70),
+  ('kayaan-classic', 'Iris', 65),
+  ('kayaan-classic', 'Woody', 55),
+  ('his-confession', 'Vanilla', 48),
+  ('his-confession', 'Violet', 30),
+  ('dark-door-intense', 'Iris', 68),
+  ('dark-door-intense', 'Amber', 25),
+  ('dark-door-intense', 'Cedar', 20);
