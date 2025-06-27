@@ -1,7 +1,18 @@
 #!/bin/bash
 # filepath: /home/haris/code/ScentmatchHead/run.sh
+
+
+PURPLE='\033[1;35m'
+PINK='\e[38;5;212m'
+NC='\033[0m'
 WORK_DIR="$(pwd)"
 echo "Working directory: $WORK_DIR"
+
+
+
+
+
+echo -e "${PINK}<${NC}${PURPLE}Initialising Scentmatch environment...${NC}${PINK}>${NC}"
 
 # Function to clone a repository
 clone_repo() {
@@ -26,7 +37,7 @@ clone_repo() {
 }
 
 # Main execution
-echo "Starting git clone operations..."
+echo -e "${PINK}<${NC}${PURPLE}Starting git clone operations...${NC}${PINK}>${NC}"
 
 # Clone the server repository
 clone_repo "https://github.com/Mrmuffinman-yoda/ScentMatchServer" "./server"
@@ -36,7 +47,8 @@ clone_repo "https://github.com/Mrmuffinman-yoda/ScentMatch" "./ui"
 
 echo "Completed all clone operations"
 
-echo "Initialising environment variables..."
+echo -e "${PINK}<${NC}${PURPLE}Initialising environment variables...${NC}${PINK}>${NC}"
+
 python3 config/env/start.py
 if [ $? -eq 0 ]; then
     echo "Environment variables initialized successfully"
@@ -45,7 +57,9 @@ else
     exit 1
 fi
 
-echo "Installing dependencies for the UI..."
+
+echo -e "${PINK}<${NC}${PURPLE}Installing dependencies for the UI...${NC}${PINK}>${NC}"
+
 cd ./ui
 pnpm install
 
@@ -56,4 +70,4 @@ else
     exit 1
 fi
 
-echo "Your ScentMatch environment is ready to use!"
+echo "👷‍♂️Your ScentMatch  environment is ready to use! "
