@@ -37,19 +37,21 @@ VALUES
   (
     'Kayaan Classic',
     2,
-    'A clone of Dior Homme Parfum 2025.',
+    'Kayaan Classic by Al Wataniah is a Oriental Vanilla fragrance for women and men. This is a new fragrance. Kayaan Classic was launched in 2023. Top notes are Bergamot and Orange; middle notes are Tuscan Iris, Spices, Rose and Jasmine; base notes are Vanilla, Sandalwood, Musk and Patchouli.
+
+',
     'kayaan-classic'
   ),
   (
     'His Confession',
     1,
-    'A clone of Dior Homme Parfum 2025.',
+    'His Confession by Lattafa Perfumes is a Oriental Woody fragrance for men. This is a new fragrance. His Confession was launched in 2024. Top notes are Cinnamon, Lavender and Mandarin; middle notes are Iris, Benzoin, Cypress and Mahonial; base notes are Vanilla, Tonka, Amber, Cedarwood, Incense and Patchouli.',
     'his-confession'
   ),
   (
     'Dark Door Intense',
     3,
-    'A clone of Dior Homme Parfum 2025.',
+    'Dark Door Intense by Maison Alhambra is a Aromatic fragrance for women and men. Dark Door Intense was launched in 2022. Top note is Lavender; middle notes are Iris, Ambrette and Pear; base notes are Virginia Cedar and Vetiver.',
     'dark-door-intense'
   );
 
