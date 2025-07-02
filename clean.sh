@@ -29,7 +29,7 @@ docker volume rm $(docker volume ls -q | grep 'scentmatch') 2>/dev/null
 echo "Optionally removing Docker images related to this project"
 docker images | grep scentmatch && read -p "Delete these images? [y/N] " yn
 if [[ "$yn" == "y" || "$yn" == "Y" ]]; then
-  docker rmi $(docker images -q | grep -v '<none>' | xargs docker inspect --format '{{.RepoTags}} {{.RepoDigests}} {{.RepoTags}}' | grep 'scentmatch' | awk '{print $1}')
+  docker images | grep 'scentmatch' | awk '{print $3}' | xargs -r docker rmi
 fi
 
 echo "Cleanup complete."
