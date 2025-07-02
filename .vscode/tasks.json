@@ -2,29 +2,30 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "Build: Start Dev Environment",
+      "label": "Dev Environment",
       "type": "shell",
-      "command": "bash shutdown.sh && bash run_dev.sh",
+      "command": "./manage dev",
       "problemMatcher": [],
-      "group": {
-        "kind": "build",
-        "isDefault": true
-      }
-    },
-    { 
-        "label": "Start Prod Environment",
-        "type": "shell",
-        "command": "bash shutdown.sh && bash run_prod.sh",
-        "problemMatcher": [],
+      "group": { "kind": "build", "isDefault": true }
     },
     {
-        "label" : "Run Tests",
-        "type": "shell",
-        "command": "bash shutdown.sh && bash run_tests.sh",
-        "problemMatcher": [],
-        "group": {
-          "kind": "test",
-        }
+      "label": "Prod Environment",
+      "type": "shell",
+      "command": "./manage prod",
+      "problemMatcher": []
+    },
+    {
+      "label": "Run Tests",
+      "type": "shell",
+      "command": "./manage test",
+      "problemMatcher": [],
+      "group": { "kind": "test" }
+    },
+    {
+      "label": "Clean",
+      "type": "shell",
+      "command": "./manage clean",
+      "problemMatcher": []
     }
   ]
 }

@@ -9,9 +9,6 @@ WORK_DIR="$(pwd)"
 echo "Working directory: $WORK_DIR"
 
 
-
-
-
 echo -e "${PINK}<${NC}${PURPLE}Initialising Scentmatch environment...${NC}${PINK}>${NC}"
 
 # Function to clone a repository

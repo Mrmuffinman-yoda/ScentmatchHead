@@ -1,0 +1,37 @@
+#!/bin/bash
+
+if [ $# -eq 0 ]; then
+  echo "Usage: $0 {dev|prod|test|clean|update|shutdown|boot} [more ...]"
+  exit 1
+fi
+
+for cmd in "$@"; do
+  case "$cmd" in
+    dev)
+      bash scripts/run_dev.sh
+      ;;
+    prod)
+      bash scripts/run_prod.sh
+      ;;
+    test)
+      bash scripts/run_test.sh
+      ;;
+    clean)
+      sudo bash scripts/clean.sh
+      ;;
+    update)
+      bash scripts/update.sh
+      ;;
+    shutdown)
+      bash scripts/shutdown.sh
+      ;;
+    boot)
+      bash scripts/boot.sh
+      ;;
+    *)
+      echo "Unknown command: $cmd"
+      echo "Usage: $0 {dev|prod|test|clean|update|shutdown|boot} [more ...]"
+      exit 1
+      ;;
+  esac
+done
