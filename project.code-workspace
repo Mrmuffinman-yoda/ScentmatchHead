@@ -1,9 +1,10 @@
 {
     "folders":[
-        {"path": "server"},
+        { "path": "server"},
         { "path" :"ui"},
         { "path" :"config"},
-        { "path" : "storage"}
+        { "path" : "storage"},
+        { "path" : "scripts"}
     ],
     "settings" : {}
 }
