@@ -3,8 +3,8 @@ x-nextjs-service: &nextjs-service
     context: ./ui
     target: prod
   image: scentmatch-nextjs:latest
-  environment:
-    - NODE_ENV=production
+  env_file:
+    - ./config/env/.env.prod
   networks:
     - scentmatch-network
   restart: unless-stopped
@@ -45,15 +45,8 @@ services:
   fastapi:
     build: ./server
     container_name: fastapi-server
-    environment:
-      - DATABASE_URL=postgres://user:password@postgres-db-PRD/scentmatch
-      - DB_HOST=postgres-db-PRD
-      - DB_PORT=5432
-      - DB_NAME=scentmatch_db
-      - DB_USER=scentmatch_user
-      - DB_PASSWORD=scentmatch_password
-      - REDIS_HOST=redis
-      - REDIS_PORT=6379
+    env_file:
+      - ./config/env/.env.prod
     depends_on:
       - postgres-db-PRD
     networks:
@@ -62,7 +55,7 @@ services:
       - "8001:8001"
     volumes:
       - ./server:/app
-    command: uvicorn app.main:app --host 0.0.0.0 --port 8001
+    command: gunicorn -w 4 -k uvicorn.workers.UvicornWorker app.main:app --bind 0.0.0.0:8001
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8001/docs"]
@@ -73,10 +66,8 @@ services:
   postgres-db-PRD:
     image: postgres:latest
     container_name: postgres-db-PRD
-    environment:
-      POSTGRES_USER: scentmatch_user
-      POSTGRES_PASSWORD: scentmatch_password
-      POSTGRES_DB: scentmatch_db
+    env_file:
+      - ./config/env/.env.prod
     volumes:
       - postgres-data:/var/lib/postgresql/data
       - ./config/db_init:/docker-entrypoint-initdb.d/
@@ -95,9 +86,8 @@ services:
   minio:
     image: minio/minio:latest
     container_name: minio
-    environment:
-      MINIO_ROOT_USER: minio
-      MINIO_ROOT_PASSWORD: minio123
+    env_file:
+      - ./config/env/.env.prod
     entrypoint: /docker-entrypoint-init.d/init.sh
     command: server /data --console-address ":9090"
     ports:

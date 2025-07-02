@@ -3,8 +3,8 @@
 CREATE TABLE
   IF NOT EXISTS fragrance_images (
     id SERIAL PRIMARY KEY,
-    slug VARCHAR(50) NOT NULL, -- This is a combination of the house+fragname e.g dior+homme-intense-2025
-    image_count INT NOT NULL DEFAULT 0 -- Removed the trailing comma here
+    slug VARCHAR(50) NOT NULL,
+    image_count INT NOT NULL DEFAULT 0
   );
 
 -- images are located in blob storage
@@ -12,7 +12,7 @@ CREATE TABLE
 INSERT INTO
   fragrance_images (slug, image_count)
 VALUES
-  ('dior-homme-parfum-2025', 4),
+  ('homme-parfum-2025', 4),
   ('kayaan-classic', 2),
-  ('lattafa-his-confession', 2),
-  ('maison-alhambra-dark-door-intense', 2);
+  ('his-confession', 2),
+  ('dark-door-intense', 2);
