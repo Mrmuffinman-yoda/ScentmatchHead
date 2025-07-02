@@ -31,13 +31,21 @@ services:
     restart: unless-stopped
 
   nextjs_2:
-    <<: *nextjs-service
+    image: scentmatch-nextjs:latest
     container_name: nextjs-server-2
+    env_file:
+      - ./config/env/.env.prod
+    networks:
+      - scentmatch-network
     restart: unless-stopped
 
   nextjs_3:
-    <<: *nextjs-service
+    image: scentmatch-nextjs:latest
     container_name: nextjs-server-3
+    env_file:
+      - ./config/env/.env.prod
+    networks:
+      - scentmatch-network
     depends_on:
       - fastapi
     restart: unless-stopped
