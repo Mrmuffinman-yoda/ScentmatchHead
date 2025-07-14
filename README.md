@@ -20,7 +20,7 @@ cd ScentMatchHead
 ### 2. Initialise the project
 
 ```bash
-bash boot.sh
+./manage boot
 ```
 
 This will pull the latest versions of ScentMatchUI and ScentMatchServer
@@ -28,7 +28,7 @@ This will pull the latest versions of ScentMatchUI and ScentMatchServer
 ## 🚦Running the App
 
 ```bash
-bash run_prod.sh
+./manage prod
 ```
 - Runs 3 instances of the Next.js frontend
 
@@ -42,7 +42,7 @@ bash run_prod.sh
 
 
 ```bash
-bash run_dev.sh
+./manage dev
 ```
 - 1 instance of Next.js with hot reload
 
@@ -51,7 +51,7 @@ bash run_dev.sh
 - Perfect for local dev
 
 ```bash
-bash run_test.sh
+./manage test
 ```
 
 - Runs all unit tests on the FastAPI server
@@ -68,15 +68,12 @@ Each environment includes:
 
 All environments have their own docker-compose files, each configured with specific environment variables and secrets.
 
+`./manage prod` -> This is used to run production version of the app, nextjs won't hot reload and there are three instances of nextjs with an nginx infront of it for load balancing
 
+`./manage dev` -> This is used for development purposes only, has only 1 instance of nextjs and supports hot reload for both fastapi server and nextjs server
 
- We now have the option to run run either `bash run_prod.sh` / `bash run_dev.sh` / `bash run_test.sh` depending on the use case
-
-`bash run_prod.sh` -> This is used to run production version of the app, nextjs won't hot reload and there are three instances of nextjs with an nginx infront of it for load balancing
-
-`bash run_dev.sh` -> This is used for development purposes only, has only 1 instance of nextjs and supports hot reload for both fastapi server and nextjs server
-
-`bash run_test.sh` -> This is used for running the unittests on the fastapi server
+`./manage test` -> This is used for running the unittests on the fastapi server
+`./manage clean` -> cleans up files associated with the project including docker images
 
 All environments have an instance of minio for blob storage and redis cache for caching db requests. 
 
