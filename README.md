@@ -23,7 +23,12 @@ cd ScentMatchHead
 ./manage boot
 ```
 
-This will pull the latest versions of ScentMatchUI and ScentMatchServer
+
+This will pull the latest versions:
+
+ScentMatch -> https://github.com/Mrmuffinman-yoda/ScentMatch
+
+ScentMatchServer -> https://github.com/Mrmuffinman-yoda/ScentMatchServer
 
 ## 🚦Running the App
 
