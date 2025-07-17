@@ -83,3 +83,7 @@ All environments have their own docker-compose files, each configured with speci
 All environments have an instance of minio for blob storage and redis cache for caching db requests. 
 
 Each of the environments have their own corresponding docker-compose files which contain env variables and secrets.
+
+## 🏗️ System Design
+
+![Untitled Diagram drawio (1)](https://github.com/user-attachments/assets/5cf78b7d-6c15-4cbe-a0b6-182252eecc96)
