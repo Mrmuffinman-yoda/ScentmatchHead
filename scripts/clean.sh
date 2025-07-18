@@ -10,13 +10,25 @@ echo -e "${PINK}<${NC}${PURPLE}Cleaning Project${NC}${PINK}>${NC}"
 
 echo "Cleaning frontend build artifacts..."
 cd ui
-rm -rf node_modules package-lock.json .next
+sudo rm -rf node_modules package-lock.json .next
 cd ..
 
 echo -e "${PINK}<${NC}${PURPLE}Cleaning Python __pycache__ files...${NC}${PINK}>${NC}"
 cd server/app
 find . -type d -name "__pycache__" -exec rm -rf {} +
-cd ../../
+
+echo -e "${PINK}<${NC}${PURPLE}Removing pytest Cache...${NC}${PINK}>${NC}"
+
+cd ..
+sudo rm -rf .pytest_cache
+sudo rm -rf .ruff_cache
+
+echo -e "${PINK}<${NC}${PURPLE}Removing test logs...${NC}${PINK}>${NC}"
+cd logs
+
+sudo rm -rf *.log    
+
+cd ../../../
 
 echo -e "${PINK}<${NC}${PURPLE}Removing Docker volumes related to this project${NC}${PINK}>${NC}"
 
